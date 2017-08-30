@@ -7,24 +7,13 @@ Parte I. Ejercicio básico.
 Para ilustrar el uso del framework Spring, y el ambiente de desarrollo para el uso del mismo a través de Maven (y NetBeans), se hará la configuración de una aplicación de análisis de textos, que hace uso de un verificador gramatical que requiere de un corrector ortográfico. A dicho verificador gramatical se le inyectará, en tiempo de ejecución, el corrector ortográfico que se requiera (por ahora, hay dos disponibles: inglés y español).
 
 1. Abra el los fuentes del proyecto en NetBeans.
-2. Para el proyecto suministrado, cree un nuevo archivo de configuración de Contextos para Spring, el cual, por convención, se llamará applicationContext.xml:
 
-	![img](img/NetbeansSpringConf.png)
- 
-3. Rectifique que el archivo de configuración quede en la ruta estándar de Maven para archivos de configuración (/src/main/resources):
+2. Revise el archivo de configuración de Spring ya incluido en el proyecto (src/main/resources). El mismo indica que Spring buscará automáticamente los 'Beans' disponibles en el paquete indicado.
 
-	![img](img/ResourcePath.png)
+3. Haciendo uso de la [configuración de Spring basada en anotaciones](https://docs.spring.io/spring-boot/docs/current/reference/html/using-boot-spring-beans-and-dependency-injection.html) marque con las anotaciones @Autowired y @Service las dependencias que deben inyectarse, y los 'beans' candidatos a ser inyectadas -respectivamente-:
 
-
-4.	Para este ejemplo, realice la siguiente configuración de Spring (use las opciones de autocompletar (ctrl+espacio) del IDE NetBeans:
-
-	* Se tendrá un bean llamado 'schecker' (spellChecker), el cual -por ahora- estará asociado a la clase SpanishSpellChecker.
-	* Se tendrá un bean 'grammarChecker' asociado a la clase GrammarChecker.
-	* El bean GrammarChecker tiene una propiedad 'spellChecker' (dado que tiene unos métodos getSpellChecker/setSpellChecker). En dicha propiedad se inyectará (cuando se construya una instancia de spellChecker) el bean 'schecker' definido anteriormente.
-
-
-	![img](img/XMLConfig.png)
- 
+	* GrammarChecker será un bean, que tiene como dependencia algo de tipo 'SpellChecker'.
+	* EnglishSpellChecker y SpanishSpellChecker son los dos posibles candidatos a ser inyectados. Se debe seleccionar uno, u otro, mas NO ambos (habría conflicto de resolución de dependencias). Por ahora haga que se use EnglishSpellChecker.
  
 5.	Haga un programa de prueba, donde se cree una instancia de GrammarChecker mediante Spring, y se haga uso de la misma:
 
@@ -36,6 +25,4 @@ Para ilustrar el uso del framework Spring, y el ambiente de desarrollo para el u
 	}
 	```
 	
-6.	Modifique el archivo de configuración de Spring para que el Bean ‘spellChecker‘ ahora haga uso de la clase SpanishSpellChecker (para que a GrammarChecker se le inyecte EnglishSpellChecker en lugar de  SpanishSpellChecker. Verifique el nuevo resultado.
-
-
+6.	Modifique la configuración con anotaciones para que el Bean ‘GrammarChecker‘ ahora haga uso del  la clase SpanishSpellChecker (para que a GrammarChecker se le inyecte EnglishSpellChecker en lugar de  SpanishSpellChecker. Verifique el nuevo resultado.

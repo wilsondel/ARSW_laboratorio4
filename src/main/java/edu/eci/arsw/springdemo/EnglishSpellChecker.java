@@ -7,4 +7,5 @@ public class EnglishSpellChecker implements SpellChecker {
 		return "Checked with english checker:"+text;
 	}
 
+        
 }
